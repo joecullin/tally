@@ -1,9 +1,11 @@
 import './assets/css/App.css';
+import './assets/css/bootstrap.min.css';
 import React from "react";
 import Header from "./components/Header";
 import TallyInput from "./components/TallyInput";
+import TallyView from "./components/TallyView";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route,
 } from "react-router-dom";
@@ -27,12 +29,12 @@ function App() {
         id: "default",
         displayName: "Tally Something!",
         tallies: [{
-            id: "generic",
+            id: "default",
             label: "Count event!",
             lastEvent: null,
         }],
         allData: [{
-            id: "generic",
+            id: "default",
             events: [],
         }],
     }, "tallyData");
@@ -53,17 +55,15 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <link
-                    rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-                    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-                    crossOrigin="anonymous"
+                <Header
+                    brandText={data.displayName}
                 />
-                <Header/>
                 <Switch>
-                    {/* <Route path="/review">
-                        <TallyReview />
-                    </Route> */}
+                    <Route path="/view">
+                        <TallyView
+                            tallies={data.tallies ? data.tallies : []}
+                         />
+                    </Route>
                     <Route path="/">
                         <TallyInput
                             tallies={data.tallies ? data.tallies : []}
