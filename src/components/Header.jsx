@@ -15,8 +15,8 @@ const Header = ({brandText}) => {
                         console.log(`selected ${selectedKey}`);
                     }}
                 >
-                    <Nav.Link href="/#/">Counter</Nav.Link>
-                    <Nav.Link href="/#/view">View</Nav.Link>
+                    <Nav.Link href="/tally/#/">Counter</Nav.Link>
+                    <Nav.Link href="/tally/#/view">View</Nav.Link>
                     <NavDropdown title="Options" id="basic-nav-dropdown" className="ml-auto">
                         <NavDropdown.Item href="/4">Config 4</NavDropdown.Item>
                         <NavDropdown.Item href="/5">Config 5</NavDropdown.Item>

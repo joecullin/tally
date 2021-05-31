@@ -55,7 +55,7 @@ function App() {
     };
 
     return (
-        <Router>
+        <Router basename="/tally/">
             <div className="App text-left">
                 <Header
                     brandText={data.displayName}
