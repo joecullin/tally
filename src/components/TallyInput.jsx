@@ -4,21 +4,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import moment from "moment";
 
-const TallyInput = ({tallies, recordTally}) => {
+const TallyInput = ({tallyConfigs, recordTally}) => {
     return (
-        <Row className="text-left">
-        {tallies.map(tally => {
+        <Row>
+        {tallyConfigs.map(config => {
             return (
-                <Col key={tally.id} xs="12" style={{padding: "2em"}}>
+                <Col key={config.id} xs="12" style={{padding: "2em"}}>
                     <div>
                         <Button
-                            onClick={() => recordTally(tally.id)}
+                            onClick={() => recordTally(config.id)}
                         >
-                            {tally.label}
+                            {config.buttonLabel}
                         </Button>
-                        {tally.lastEvent &&
+                        {config.lastEvent &&
                             <span style={{paddingLeft: "1em", fontStyle: "italic"}}>
-                                {"last: " + moment(tally.lastEvent).fromNow()}
+                                {"last: " + moment(config.lastEvent).fromNow()}
                             </span>
                         }
                     </div>

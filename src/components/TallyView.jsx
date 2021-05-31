@@ -1,31 +1,54 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import moment from "moment";
+import EventDisplay from "./EventDisplay";
 
-const TallyView = ({tallies, recordTally}) => {
+const TallyView = ({tallyConfigs, tallyData}) => {
+
+    const displayEvents = (data) => {
+        let display = [];
+        if (data && data.events){
+            let thisDate;
+            let prevDate;
+            for (let i=data.events.length-1; i>=0; i--){
+                const event = data.events[i];
+
+                // add a divider line between days
+                let borderTop = "none";
+                thisDate = new Date(event);
+                if (prevDate && (
+                    prevDate.getFullYear() !== thisDate.getFullYear() ||
+                    prevDate.getMonth() !== thisDate.getMonth() ||
+                    prevDate.getHours() !== thisDate.getHours() ||
+                    prevDate.getDate() !== thisDate.getDate()))
+                {
+                    borderTop = "solid 1px gray"
+                }
+
+                display.push(
+                    <Col key={i} xs="12" style={{paddingLeft: "3em"}}>
+                        <EventDisplay style={{borderTop}} event={event}/>
+                    </Col>
+                );
+                prevDate = thisDate;
+            }
+        }
+        return display;
+    };
+
     return (
-        <Row className="text-left">
-        {tallies.map(tally => {
-            return (
-                <Col key={tally.id} xs="12" style={{padding: "2em"}}>
-                    <div>
-                        <Button
-                            onClick={() => recordTally(tally.id)}
-                        >
-                            {tally.label}
-                        </Button>
-                        {tally.lastEvent &&
-                            <span style={{paddingLeft: "1em", fontStyle: "italic"}}>
-                                {"last: " + moment(tally.lastEvent).fromNow()}
-                            </span>
-                        }
-                    </div>
-                </Col>
-            );
-        })}
-        </Row>
+        <div className="text-left">
+            {tallyConfigs.map(config => {
+                return (
+                    <Row key={config.id}>
+                        <Col key={config.id} xs="12" style={{padding: "1em", paddingLeft: "2em", fontWeight: "bold"}}>
+                            {config.label}
+                        </Col>
+                        {displayEvents(tallyData.find(data => data.id === config.id))}
+                    </Row>
+                );
+            })}
+        </div>
     );
 };
   

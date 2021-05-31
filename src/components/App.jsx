@@ -1,16 +1,15 @@
-import './assets/css/App.css';
-import './assets/css/bootstrap.min.css';
+import '../assets/css/App.css';
+import '../assets/css/bootstrap.min.css';
 import React from "react";
-import Header from "./components/Header";
-import TallyInput from "./components/TallyInput";
-import TallyView from "./components/TallyView";
+import Header from "./Header";
+import TallyInput from "./TallyInput";
+import TallyView from "./TallyView";
 import {
     HashRouter as Router,
     Switch,
     Route,
 } from "react-router-dom";
 var cloneDeep = require('lodash.clonedeep');
-
 
 function useStickyState(defaultValue, key) {
     const [value, setValue] = React.useState(() => {
@@ -25,25 +24,28 @@ function useStickyState(defaultValue, key) {
 
 function App() {
 
-    const [data, setData] = useStickyState({
+    const defaultConfigAndData = {
         id: "default",
         displayName: "Tally Something!",
-        tallies: [{
+        tallyConfigs: [{
             id: "default",
-            label: "Count event!",
+            label: "My Counter",
+            buttonLabel: "Count event!",
             lastEvent: null,
         }],
-        allData: [{
+        tallyData: [{
             id: "default",
             events: [],
         }],
-    }, "tallyData");
+    };
+
+    const [data, setData] = useStickyState(defaultConfigAndData, "tallyData");
 
     const recordTally = (tallyId) => {
         console.log(`recordTally for '${tallyId}'`);
         const newData = cloneDeep(data);
-        const tally = newData.tallies.find(tally => tally.id === tallyId);
-        const tallyEvents = newData.allData.find(eventData => eventData.id === tallyId);
+        const tally = newData.tallyConfigs.find(tally => tally.id === tallyId);
+        const tallyEvents = newData.tallyData.find(eventData => eventData.id === tallyId);
         if (tally && tallyEvents){
             const now = (new Date()).toISOString();
             tally.lastEvent = now;
@@ -54,19 +56,20 @@ function App() {
 
     return (
         <Router>
-            <div className="App">
+            <div className="App text-left">
                 <Header
                     brandText={data.displayName}
                 />
                 <Switch>
                     <Route path="/view">
                         <TallyView
-                            tallies={data.tallies ? data.tallies : []}
+                            tallyConfigs={data.tallyConfigs ? data.tallyConfigs : []}
+                            tallyData={data.tallyData ? data.tallyData : []}
                          />
                     </Route>
                     <Route path="/">
                         <TallyInput
-                            tallies={data.tallies ? data.tallies : []}
+                            tallyConfigs={data.tallyConfigs ? data.tallyConfigs : []}
                             recordTally={(id) => recordTally(id)}
                         />
                     </Route>
